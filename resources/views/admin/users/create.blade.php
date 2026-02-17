@@ -13,7 +13,7 @@
 ]">
 
     <x-wire-card>
-        <form action="{{ route('admin.roles.store') }}" method="POST">
+        <form action="{{ route('admin.users.store') }}" method="POST">
             @csrf
             <div class="space-y-4">
                 <div class="grid lg:grid-cols-2 gap-4">
