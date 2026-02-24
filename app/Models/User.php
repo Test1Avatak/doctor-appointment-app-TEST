@@ -70,8 +70,16 @@ class User extends Authenticatable
         ];
     }
     // Relación uno a uno
+
+    // Pacientes
     public function patient()
     {
         return $this->hasOne(Patient::class);
+    }
+
+    // Doctores
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
     }
 }

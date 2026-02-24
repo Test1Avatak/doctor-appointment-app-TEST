@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\PatientController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoleController;
@@ -17,3 +18,10 @@ Route::resource('users', UserController::class);
 
 // Gestión de pacientes
 Route::resource('patients', PatientController::class);
+
+// Gestión de doctores
+Route::resource('doctors', DoctorController::class);
+
+// Ruta para crear doctor desde usuario
+Route::get('users/{user}/doctor/create', [DoctorController::class, 'createFromUser'])
+    ->name('doctors.createFromUser');

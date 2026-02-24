@@ -49,25 +49,14 @@ class UserController extends Controller
 
         $user->roles()->attach($data['role_id']);
 
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => 'Usuario creado',
-            'text' => 'El usuario ha sido creado exitosamente'
-        ]);
-
-        // Si se crea un paciente, redirecciona al módulo pacientes
-        if($user::role('Paciente'))
-        {
+        if ($user->hasRole('Paciente')) {
             $patient = $user->patient()->create([]);
             return redirect()->route('admin.patients.edit', $patient);
-
         }
 
-        session()->flash('swal', [
-            'icon'  => 'success',
-            'title' => 'Usuario creado correctamente',
-            'text'  => 'El usuario ha sido registrado exitosamente'
-        ]);
+        if ($user->hasRole('Doctor')) {
+            return redirect()->route('admin.doctors.createFromUser', $user);
+        }
 
         return redirect()->route('admin.users.index')->with('success', 'Usuario creado exitosamente.');
     }
@@ -82,7 +71,7 @@ class UserController extends Controller
     }
 
     /**
-     * Actualizar los datos del usuario
+      * Actualizar los datos del usuario
      */
     public function update(Request $request, User $user)
     {
