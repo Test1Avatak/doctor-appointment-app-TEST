@@ -39,11 +39,11 @@ class DoctorTable extends DataTableComponent
                 ->sortable(),
 
             Column::make('Cédula Profesional', 'license_number')
-                ->label(fn($row) => $row->license_number ?? 'N/A')
-                ->sortable(),
+                ->sortable()
+                ->format(fn($value) => $value ?: 'N/A'),
 
-            Column::make('Biografía')
-                ->label(fn($row) => $row->biography ?? 'N/A'),
+            Column::make('Biografía', 'biography')
+                ->format(fn($value) => $value ?: 'N/A'),
 
             Column::make('Acciones')
                 ->label(function ($row) {
