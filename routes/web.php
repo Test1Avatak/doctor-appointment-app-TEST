@@ -2,16 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Redirigir la página de inicio al panel de administración
+// Redirect the home page to the administration panel
 Route:: redirect('/', '/admin');
 
-// Rutas protegidas que requieren autenticación, sesión y verificación de correo
+// Protected routes that require authentication, session, and email verification
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // Ruta del dashboard principal del usuario autenticado
+    // Path to the main dashboard of the authenticated user
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
