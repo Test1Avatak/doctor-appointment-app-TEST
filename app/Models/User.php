@@ -82,4 +82,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Doctor::class);
     }
+
+    // Tickets de soporte
+    public function supportTickets()
+    {
+        return $this->hasMany(SupportTicket::class);
+    }
 }
