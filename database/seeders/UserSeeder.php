@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Charly Martinez',
             'email' => 'carlos.martinez@tecdesoftware.com',
-            'password' => Hash::make('123456'), // ✅
+            'password' => Hash::make('123456'), 
             'id_number' => '12',
             'phone' => '9911250030',
             'address' => 'Calle Falsa 123',
