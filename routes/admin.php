@@ -30,3 +30,16 @@ Route::get('users/{user}/doctor/create', [DoctorController::class, 'createFromUs
 
 // Gestión de tickets de soporte
 Route::resource('support-tickets', SupportTicketController::class);
+
+
+
+// Gestión de citas médicas
+Route::resource('appointments', \App\Http\Controllers\Admin\AppointmentController::class);
+
+// Gestión de horarios médicos
+Route::resource('doctors.schedules', \App\Http\Controllers\Admin\ScheduleController::class)
+    ->only(['index', 'store']);
+
+// Módulo de Consulta (Manager)
+Route::get('consultations/{appointment}', \App\Livewire\Admin\ConsultationManager::class)
+    ->name('consultations.show');
