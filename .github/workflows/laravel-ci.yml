@@ -1,26 +1,63 @@
 name: Laravel CI
+
 on:
   pull_request:
     branches: [ "main" ]
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
+      # 1. Clonación de repositorio
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2' # O la versión que estés usando
-        
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      # 2. PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, bcmath, sqlite, pdo_sqlite
+          coverage: none
 
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      # Composer
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-    - name: Generate key
-      run: php artisan key:generate
+      # Node - Vite
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-    - name: Execute tests
-      run: php artisan test
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Build frontend (Vite)
+        run: npm run build
+
+      # Configurar entorno Laravel
+      - name: Setup environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      # Configurar SQLite
+      - name: Prepare SQLite
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Configure DB
+        run: |
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=database/database.sqlite" >> .env
+
+      # Migraciones
+      - name: Run migrations
+        run: php artisan migrate --force
+
+      # Ejecutar tests
+      - name: Run tests
+        run: php artisan test
